@@ -7,13 +7,29 @@ package com.github.aliez;
  * @date 2021/3/19 16:47
  */
 public class MyLinkedList {
-    private int val;
-    private MyLinkedList next;
+
+    static class LinkNode {
+        int val;
+        LinkNode next;
+
+        public LinkNode(int val) {
+            this.val = val;
+            this.next = null;
+        }
+
+        public LinkNode() {
+        }
+    }
+
+    private LinkNode dummyHead;
+    private int size;
 
     /**
      * Initialize your data structure here.
      */
     public MyLinkedList() {
+        this.dummyHead = new LinkNode(0);
+        this.size = 0;
 
     }
 
@@ -21,17 +37,14 @@ public class MyLinkedList {
      * Get the value of the index-th node in the linked list. If the index is invalid, return -1.
      */
     public int get(int index) {
-        int count = 0;
-        MyLinkedList cur = this;
-        while (cur.next != null) {
-            if (count==index) {
-                return cur.val;
-            } else {
-                cur = cur.next;
-                count++;
-            }
+        if (index > (size - 1) || index < 0) {
+            return -1;
         }
-        return -1;
+        LinkNode cur = dummyHead.next;
+        while (index-- > 0) {
+            cur = cur.next;
+        }
+        return cur.val;
 
     }
 
@@ -39,43 +52,43 @@ public class MyLinkedList {
      * Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list.
      */
     public void addAtHead(int val) {
-        MyLinkedList myLinkedList = new MyLinkedList();
-        myLinkedList.val = val;
-        myLinkedList.next= this;
+        LinkNode ln = new LinkNode();
+        ln.val = val;
+        ln.next = dummyHead.next;
+        dummyHead.next = ln;
+        size++;
+
     }
 
     /**
      * Append a node of value val to the last element of the linked list.
      */
     public void addAtTail(int val) {
-        MyLinkedList myLinkedList = new MyLinkedList();
-        myLinkedList.val = val;
-        MyLinkedList cur = this;
+        LinkNode ln = new LinkNode();
+        ln.val = val;
+        LinkNode cur = dummyHead;
         while (cur.next != null) {
             cur = cur.next;
         }
-        cur.next = myLinkedList;
+        cur.next = ln;
+        size++;
     }
 
     /**
      * Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted.
      */
     public void addAtIndex(int index, int val) {
-        MyLinkedList myLinkedList = new MyLinkedList();
-        myLinkedList.val = val;
-        MyLinkedList cur = this;
-        int count = 0;
-        if (index < 0) {
-            addAtHead(val);
+        if (index > size) {
+            return;
         }
-        while (cur.next != null) {
-            if (count == index) {
-                myLinkedList.next=cur.next;
-                cur.next=myLinkedList;
-            }
+        LinkNode ln = new LinkNode(val);
+        LinkNode cur = dummyHead;
+        while (index-- > 0) {
             cur = cur.next;
-            count++;
         }
+        ln.next = cur.next;
+        cur.next = ln;
+        size++;
 
     }
 
@@ -83,25 +96,14 @@ public class MyLinkedList {
      * Delete the index-th node in the linked list, if the index is valid.
      */
     public void deleteAtIndex(int index) {
-        MyLinkedList cur =this;
-        int count=0;
-        while (cur.next!=null){
-            if (count==index){
-                cur.next=cur.next.next;
-            }
-            count++;
+        if (index >= size || index < 0) {
+            return;
         }
-    }
-
-    public static void main(String[] args) {
-        MyLinkedList linkedList = new MyLinkedList();
-        linkedList.addAtHead(1);
-        linkedList.addAtTail(3);
-//        linkedList.addAtIndex(1,2);   //链表变为1-> 2-> 3
-        System.out.println(linkedList.get(0));
-        System.out.println(linkedList.get(1));
-//        System.out.println(linkedList.get(2));
-//        linkedList.deleteAtIndex(1);  //现在链表是1-> 3
-//        System.out.println(linkedList.get(1));
+        LinkNode cur = dummyHead;
+        while (index-- > 0) {
+            cur = cur.next;
+        }
+        cur.next = cur.next.next;
+        size--;
     }
 }
