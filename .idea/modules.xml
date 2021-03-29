@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/hash-table/hash-table.iml" filepath="$PROJECT_DIR$/hash-table/hash-table.iml" />
       <module fileurl="file://$PROJECT_DIR$/leet-code.iml" filepath="$PROJECT_DIR$/leet-code.iml" />
       <module fileurl="file://$PROJECT_DIR$/linked-list/linked-list.iml" filepath="$PROJECT_DIR$/linked-list/linked-list.iml" />
+      <module fileurl="file://$PROJECT_DIR$/string/string.iml" filepath="$PROJECT_DIR$/string/string.iml" />
     </modules>
   </component>
 </project>
