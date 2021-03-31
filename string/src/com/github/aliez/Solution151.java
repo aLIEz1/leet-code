@@ -19,7 +19,7 @@ public class Solution151 {
             fastIndex++;
         }
         //去掉中间多余的空格
-        while (fastIndex < oldCharArray.length) {
+        for (;fastIndex < oldCharArray.length;fastIndex++) {
             if (fastIndex - 1 > 0
                     && oldCharArray[fastIndex] == oldCharArray[fastIndex - 1]
                     && oldCharArray[fastIndex] == ' ') {
@@ -29,7 +29,6 @@ public class Solution151 {
                 oldCharArray[slowIndex++] = oldCharArray[fastIndex];
             }
 
-            fastIndex++;
         }
         //去掉末尾的空格
         char[] newCharArray;
@@ -42,16 +41,25 @@ public class Solution151 {
             System.arraycopy(oldCharArray, 0, newCharArray, 0, slowIndex);
         }
 
-        for (int i=0,j=newCharArray.length-1;i<j;i++,j--){
-            char temp =newCharArray[i];
-            newCharArray[i]=newCharArray[j];
-            newCharArray[j]=temp;
+        String s1 = new String(newCharArray);
+        Stack<String> stringStack = new Stack<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] split = s1.split(" ");
+        for (String s2 : split) {
+            stringStack.push(s2);
         }
 
-        for (int i=0;i<newCharArray.length;i++){
-            //TODO 逐个翻转单词
+        for (String s2 : split) {
+            stringBuilder.append(stringStack.pop()).append(" ");
         }
+        stringBuilder.deleteCharAt(newCharArray.length);
+        return stringBuilder.toString();
 
 
+    }
+
+    public static void main(String[] args) {
+        Solution151 solution151 = new Solution151();
+        System.out.println(solution151.reverseWords("  hello world!  "));
     }
 }
