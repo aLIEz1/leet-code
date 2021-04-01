@@ -4,9 +4,9 @@
 
 注意要将next数组求得的值减一，防止next数组对应的数字与下标相同导致的回溯时造成死循环。如下图
 
-![](C:\Users\lm\IdeaProjects\leet-code\static-file\s28-1.png)
+![](https://github.com/aLIEz1/leet-code/blob/master/static-file/s28-1.png?raw=true)
 
-![](C:\Users\lm\IdeaProjects\leet-code\static-file\s28-2.png)
+![](https://github.com/aLIEz1/leet-code/blob/master/static-file/s28-2.png?raw=true)
 
 
 
