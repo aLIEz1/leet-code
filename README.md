@@ -126,3 +126,20 @@ public boolean empty() {
 
 ```
 
+### 用队列实现栈
+
+可以考虑简单的方法，只使用一个队列，入队前先取出队列的大小n，然后入队，再把前n个元素先出队后入队，这样新加入的元素就在队首了，代码如下
+
+
+
+```java
+public void push(int x) {
+    int n = queue.size();
+    queue.offer(x);
+    for (int i = 0; i < n; i++) {
+        queue.offer(queue.poll());
+    }
+
+}
+```
+
