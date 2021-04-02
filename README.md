@@ -97,7 +97,9 @@ public class Solution459 {
 
 ## 栈与队列
 
-### 用栈实现队列
+
+
+### 力扣232 用栈实现队列
 
 要注意，当输出栈有元素的时候，直接pop输出栈即可，没有元素时再将输入栈压入输出栈
 
@@ -126,7 +128,9 @@ public boolean empty() {
 
 ```
 
-### 用队列实现栈
+
+
+### 力扣225 用队列实现栈
 
 可以考虑简单的方法，只使用一个队列，入队前先取出队列的大小n，然后入队，再把前n个元素先出队后入队，这样新加入的元素就在队首了，代码如下
 
@@ -142,4 +146,72 @@ public void push(int x) {
 
 }
 ```
+
+
+
+### 力扣 1047  删除字符串中的所有相邻重复项
+
+思路是依次将字符串压入栈，当遍历到当前的元素时与栈顶元素比较，若相同则弹栈，否则进栈
+
+具体代码如下
+
+```java
+public String removeDuplicates(String S) {
+    Stack<Character> characterStack1 = new Stack<>();
+    char[] array = S.toCharArray();
+    for (int i = 0; i < array.length; i++) {
+        if (!characterStack1.isEmpty()) {
+            if (array[i] == characterStack1.peek()) {
+                characterStack1.pop();
+            } else {
+                characterStack1.push(array[i]);
+            }
+        } else {
+            characterStack1.push(array[i]);
+        }
+    }
+    StringBuilder stringBuilder = new StringBuilder();
+    int size = characterStack1.size();
+    for (int i = 0; i < size; i++) {
+        stringBuilder.append(characterStack1.pop());
+    }
+    return stringBuilder.reverse().toString();
+
+}
+```
+
+需要注意的是遍历栈时千万不能把栈的大小当成for结束的条件，因为栈的大小是动态变化的。
+
+错误示例如下
+
+```java
+for (int i = 0; i < characterStack1.size(); i++) {
+    stringBuilder.append(characterStack1.pop());
+}
+```
+
+正确的做法应该是将 characterStack1.size()在for循环外取出
+
+如下
+
+```java
+int size = characterStack1.size();
+for (int i = 0; i < size; i++) {
+    stringBuilder.append(characterStack1.pop());
+}
+```
+
+```java
+	String str = "123";
+		Pattern pattern = Pattern.compile("[0-9]+");
+		Matcher matcher = pattern.matcher((CharSequence) str);
+		boolean result = matcher.matches();
+		if (result) {
+			System.out.println("true");
+		} else {
+			System.out.println("false");
+		}
+```
+
+
 
