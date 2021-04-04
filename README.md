@@ -270,3 +270,81 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 ```
 
 注意List数组可以通过`list.stream().mapToInt(i->i).toArray();`转换成int[]数组
+
+
+
+
+
+### 前K个高频元素
+
+此题应用优先级队列对数字出现的频率进行排序，优先级队列`PriorityQueue`数据结构为小顶堆，即最小的元素在队首，小顶堆是一个完全二叉树，其父节点不大于左右子节点的值
+
+此题思路是利用`getOrDefault()`函数对数组数字出现的频率进行统计，key为数组中的数组，value为数组中该数字出现的频率，然后将map中的键值对入队，当队中元素大于K个是出队，由于总是出现频率最小的在队首，所以每次弹出的都是频率最小的元素，剩下的就是前K个高频元素
+
+
+
+该题需要自定义Entry键值对，如下：
+
+
+
+```java
+static class Entry<K, V> implements Map.Entry<K, V> {
+    private final K key;
+    private V value;
+
+    public Entry(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    @Override
+    public K getKey() {
+        return key;
+    }
+
+    @Override
+    public V getValue() {
+        return value;
+    }
+
+    @Override
+    public V setValue(V value) {
+        V oldValue = this.value;
+        this.value = value;
+        return oldValue;
+    }
+}
+```
+
+
+
+具体代码逻辑如下：
+
+
+
+```java
+for (int num : nums) {
+    map.put(num, map.getOrDefault(num, 0) + 1);
+}
+for (Integer integer : map.keySet()) {
+    queue.add(new Entry<>(integer, map.get(integer)));
+    if (queue.size() > k) {
+        queue.poll();
+    }
+}
+```
+
+ 另外，可以使用`Map.Entry.comparingByValue();`以`Entry`的值进行排序生成一个比较器
+
+```java
+Comparator<Map.Entry<Integer, Integer>> byValue = Map.Entry.comparingByValue();
+```
+
+构造优先级队列时将这个`Comparator`传入即可
+
+```java
+PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue<>(byValue);
+```
+
+
+
