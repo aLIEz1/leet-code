@@ -215,3 +215,58 @@ for (int i = 0; i < size; i++) {
 
 
 
+### 力扣239 hard 滑动窗口最大值 
+
+
+
+此题重难点是实现一个单调队列，队列里只维护可能为最大值的元素
+
+实现滑动窗口，精髓在于此单调队列的pop()函数,每次移动时比较出窗口的元素与当前队首元素，若相等则说明此时最大值滑出窗口，要将队列中的队首元素弹出，
+
+代码如下
+
+
+
+```java
+public void pop(int value) {
+    if (!deque.isEmpty() && value == deque.getFirst()) {
+        deque.pollFirst();
+    }
+}
+```
+
+入队操作就是比较当前要入队的元素与队尾元素，当要入队的元素大于队尾元素时将队尾元素弹出，直到要入队的元素小于队尾元素或者队为空时将要入队的元素入队
+
+
+
+```java
+public void push(int value) {
+    while (!deque.isEmpty() && value > deque.getLast()) {
+        deque.pollLast();
+    }
+    deque.offerLast(value);
+}
+```
+
+
+
+实际操作队列时，要先将前k个元素一次性入队也就是执行push(value)操作，入队完成后取队首元素加入ArryList中，之后的元素每次执行循环都要执行pop(value)操作，因为窗口是滑动的，每次需要判断出窗口的是否为队列中最大的元素，然后将第i个元素入队，最后将队首元素添加到ArryList中去。
+
+```java
+public int[] maxSlidingWindow(int[] nums, int k) {
+    MyQueue myQueue = new MyQueue();
+    ArrayList<Integer> list = new ArrayList<>();
+    for (int i = 0; i < k; i++) {
+        myQueue.push(nums[i]);
+    }
+    list.add(myQueue.peek());
+    for (int i=k;i<nums.length;i++){
+        myQueue.pop(nums[i-k]);
+        myQueue.push(nums[i]);
+        list.add(myQueue.peek());
+    }
+    return list.stream().mapToInt(i->i).toArray();
+}
+```
+
+注意List数组可以通过`list.stream().mapToInt(i->i).toArray();`转换成int[]数组
