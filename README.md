@@ -473,3 +473,55 @@ public List<Integer> postorderTraversal(TreeNode root) {
 }
 ```
 
+
+
+### 力扣102 二叉树的层序遍历
+
+
+
+解题思路:维护一个队列，取队列的长度进行出队操作，每次出队后将当前节点的左节点入队，右节点入队，将本次出队的元素加入到List集合中，再将本次循环得到的List数组加入的ans里
+
+例如:
+
+```
+	 1
+
+​ 2		 3
+
+4	5	6	7
+```
+
+第一次入队1，队列大小为1，弹出`1`后队列加入`2 3` 第二次遍历队列大小为2 弹出`2 3 `入队 `4 5 6 7` 以此类推
+
+具体代码如下：
+
+```java
+public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> ans = new ArrayList<>();
+    if (root == null) {
+        return ans;
+    }
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TreeNode cur = queue.poll();
+            assert cur != null;
+            list.add(cur.val);
+            if (cur.left != null) {
+                queue.offer(cur.left);
+            }
+            if (cur.right != null) {
+                queue.offer(cur.right);
+            }
+        }
+        ans.add(list);
+    }
+    return ans;
+}
+```
+
+
+
