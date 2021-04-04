@@ -8,18 +8,20 @@ package com.github.aliez;
  */
 public class Solution36 {
     public int searchInsert(int[] nums, int target) {
-        int start=0;
-        int end=nums.length-1;
-        while (start<=end){
-            int middle=(start+end)/2;
-            if (nums[middle]>target){
-                end=middle-1;
-            }else if (nums[middle]<target){
-                start=middle+1;
-            }else {
+        int start = 0;
+        int end = nums.length - 1;
+        while (start <= end) {
+
+            //防止end+start溢出
+            int middle = start + (end - start) / 2;
+            if (nums[middle] > target) {
+                end = middle - 1;
+            } else if (nums[middle] < target) {
+                start = middle + 1;
+            } else {
                 return middle;
             }
         }
-        return end+1;
+        return end + 1;
     }
 }

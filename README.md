@@ -275,7 +275,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 
 
 
-### 前K个高频元素
+### 力扣347 前K个高频元素
 
 此题应用优先级队列对数字出现的频率进行排序，优先级队列`PriorityQueue`数据结构为小顶堆，即最小的元素在队首，小顶堆是一个完全二叉树，其父节点不大于左右子节点的值
 
@@ -347,4 +347,129 @@ PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue<>(byValue);
 ```
 
 
+
+
+
+
+
+## 二叉树
+
+
+
+### 力扣144 二叉树的前序遍历
+
+递归解法较简单如下：
+
+```java
+ArrayList<Integer> ans = new ArrayList<>();
+
+
+private void preorder(TreeNode root) {
+    if (root == null) {
+        return;
+    }
+    ans.add(root.val);
+    preorder(root.left);
+    preorder(root.right);
+}
+
+public List<Integer> preorderTraversal(TreeNode root) {
+    preorder(root);
+    return ans;
+}
+```
+
+
+
+重点实现迭代解法，迭代解法利用了栈先入后出的特点，将二叉树的右节点先入栈，再将二叉树的左节点入栈，这样弹栈的时候，就是正常的顺序了
+
+```java
+    public List<Integer> preorderTraversal2(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode cur = stack.pop();
+
+            //注意此处顺序是反的，先入右边再入左边，弹栈时才会是先左后右
+            if (cur.right != null) {
+                stack.push(cur.right);
+            }
+            if (cur.left != null) {
+                stack.push(cur.left);
+            }
+        }
+        return ans;
+    }
+```
+
+
+
+### 力扣94 二叉树的中序遍历
+
+中序遍历迭代的思路是将树的左节点依次入栈，当左节点为空时弹栈，并将出栈的元素右节点赋值给当前root节点，如果出栈节点没有右节点，则不会进入`while (root != null)`循环
+
+代码如下：
+
+```java
+public List<Integer> inorderTraversal(TreeNode root) {
+    List<Integer> ans = new ArrayList<>();
+    if (root == null) {
+        return ans;
+    }
+    Deque<TreeNode> stack = new ArrayDeque<>();
+
+    while (!stack.isEmpty() || root != null) {
+        while (root != null) {
+            stack.push(root);
+            root = root.left;
+        }
+        root = stack.pop();
+        ans.add(root.val);
+        root = root.right;
+    }
+    return ans;
+}
+```
+
+
+
+### 力扣145 二叉树的后序遍历
+
+迭代思路与单词的反转类似，`are you ok` ----> `ok you are` 可以先将每个单词逐个反转 `era uoy ko`，再整体反转 `ok you are` 此题类似
+
+前序遍历的顺序是`中左右`  ---->`中右左`  ----> `左右中`
+
+后序遍历的顺序是`左右中`
+
+具体思路时先将树的左节点入栈，再将右节点入栈，使用`LinkedList`保存，每次遍历前将栈顶元素弹出，头插法插入`LinkedList`，先遍历左节点后遍历右节点相当于局部反转，头插法相当于全局反转
+
+具体代码如下
+
+```java
+public List<Integer> postorderTraversal(TreeNode root) {
+    LinkedList<Integer> ans = new LinkedList<>();
+
+    if (root == null) {
+        return ans;
+    }
+
+    Deque<TreeNode> stack = new ArrayDeque<>();
+
+    stack.push(root);
+
+    while (!stack.isEmpty()) {
+        TreeNode cur = stack.pop();
+        ans.addFirst(cur.val);
+        if (cur.left != null) {
+            stack.push(cur.left);
+        }
+        if (cur.right != null) {
+            stack.push(cur.right);
+        }
+    }
+    return ans;
+
+}
+```
 
