@@ -525,3 +525,78 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 
 
 
+### 力扣 226 翻转二叉树
+
+
+
+此题思路是利用前序遍历的次序翻转当前节点左右节点的引用
+
+利用迭代法写出二叉树前序遍历
+
+```java
+public TreeNode invertTree(TreeNode root) {
+    if (root == null) {
+        return null;
+    }
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    stack.push(root);
+    while (!stack.isEmpty()) {
+        TreeNode cur = stack.pop();
+        TreeNode temp = cur.left;
+        cur.left = cur.right;
+        cur.right = temp;
+        if (cur.right != null) {
+            stack.push(cur.right);
+        }
+        if (cur.left != null) {
+            stack.push(cur.left);
+        }
+    }
+    return root;
+}
+```
+
+此题可以用递归法解，如下
+
+```java
+public TreeNode invertTreePre(TreeNode root) {
+    if (root == null) {
+        return null;
+    }
+    TreeNode temp = root.left;
+    root.left = root.right;
+    root.right = temp;
+    invertTree(root.left);
+    invertTree(root.right);
+    return root;
+}
+```
+
+
+
+注意，用递归法写的时候，中序遍历如果不注意会将一个子树翻转两次
+
+代码如下
+
+
+
+```java
+    /**
+     * 此解法为错误示范，中序遍历中间交换后右子树变成了左子树，这样做会将左子树翻转两次
+     * 正确解法应该是将invertTree(root.right); 改成 invertTree(root.left)
+     * @param root
+     * @return
+     */
+    public TreeNode invertTreeIn(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        invertTree(root.left);
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        invertTree(root.right);
+        return root;
+    }
+```
+
