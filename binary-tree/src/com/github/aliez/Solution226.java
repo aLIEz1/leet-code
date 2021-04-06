@@ -38,8 +38,8 @@ public class Solution226 {
         TreeNode temp = root.left;
         root.left = root.right;
         root.right = temp;
-        invertTree(root.left);
-        invertTree(root.right);
+        invertTreePre(root.left);
+        invertTreePre(root.right);
         return root;
     }
 
@@ -53,11 +53,11 @@ public class Solution226 {
         if (root == null) {
             return null;
         }
-        invertTree(root.left);
+        invertTreeIn(root.left);
         TreeNode temp = root.left;
         root.left = root.right;
         root.right = temp;
-        invertTree(root.right);
+        invertTreeIn(root.right);
         return root;
     }
 }
