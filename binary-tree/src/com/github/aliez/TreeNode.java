@@ -6,7 +6,7 @@ package com.github.aliez;
  * @author lm
  * @date 2021/4/4 14:41
  */
-public class TreeNode {
+public class TreeNode{
     int val;
     TreeNode left;
     TreeNode right;
