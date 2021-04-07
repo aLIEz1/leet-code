@@ -670,3 +670,37 @@ public boolean isSymmetric2(TreeNode root) {
 }
 ```
 
+
+
+### 力扣104 二叉树的最大深度
+
+此题可以用层序遍历的方法求出最大深度，代码如下
+
+
+
+```java
+public int maxDepth2(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    Queue<TreeNode> queue =new LinkedList<>();
+    queue.offer(root);
+    int count=0;
+    while (!queue.isEmpty()){
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            TreeNode cur = queue.poll();
+            if (cur.left!=null){
+                queue.offer(cur.left);
+            }
+            if (cur.right!=null){
+                queue.offer(cur.right);
+            }
+
+        }
+        count++;
+    }
+    return count;
+}
+```
+
