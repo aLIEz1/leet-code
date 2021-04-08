@@ -836,3 +836,39 @@ public boolean isBalanced(TreeNode root) {
 }
 ```
 
+
+
+
+
+### 力扣 257 二叉树的所有路径
+
+
+
+递归逻辑是判断当前节点是否为空，若不为空，则将当前节点加入到path路径中
+
+- 如果当前节点是叶子节点，则将之前的`path`加入到`paths`中去，也就是加入到`List<String>`中去
+
+- 如果当前节点不是叶子节点，则将`path`后面加`->`然后递归`getPath()`左子树和右子树
+
+
+
+```java
+private void getPath(TreeNode root, String path, List<String> paths) {
+    if (root != null) {
+        StringBuilder sb = new StringBuilder(path);
+        sb.append(root.val);
+        //如果当前节点为叶子节点,说明已经遍历到最底层，加入List<String>中去即可
+        if (root.left == null && root.right == null) {
+            paths.add(sb.toString());
+        } else {
+            //如果当前节点不是叶子节点，继续递归
+            sb.append("->");
+            getPath(root.left, sb.toString(), paths);
+            getPath(root.right, sb.toString(), paths);
+        }
+    }
+}
+```
+
+
+
