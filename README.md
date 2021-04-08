@@ -704,3 +704,93 @@ public int maxDepth2(TreeNode root) {
 }
 ```
 
+
+
+### 力扣111 二叉树的最小深度
+
+注意：此题指的最小深度时指从根节点到最近叶子节点的最短路径上的节点数量。
+
+![](https://assets.leetcode.com/uploads/2020/10/12/ex_depth.jpg)
+
+
+
+此时树的最小深度为2
+
+
+
+解此题可用递归法解，
+
+要注意两点，
+
+- 当左子树为空，右子树不为空的时候，最小深度为右子树最小深度+1
+- 当左子树不为空，右子树为空的时候，最小深度为左子树最小深度+1
+
+代码如下：
+
+相当于后序遍历 左右中
+
+**只有当左右孩子都为空的时候，才说明遍历的最低点了。如果其中一个孩子为空则不是最低点**
+
+```java
+public int minDepth(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    int leftDepth = minDepth(root.left);//左
+    int rightDepth = minDepth(root.right);//右
+    //中
+    if (root.left == null && root.right != null) {
+        return 1 + rightDepth;
+    }
+    if (root.left != null && root.right == null) {
+        return 1 + leftDepth;
+    }
+    return 1 + Math.min(leftDepth, rightDepth);
+}
+```
+
+
+
+迭代法写法要注意：当首次遍历到一个节点的左右子树均为空，则此时遍历的高度为二叉树的最小高度，此时应该退出循环，返回树的最小高度，利用了层序遍历的特点。
+
+代码如下
+
+
+
+```java
+public int minDepth2(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+    int depth = 0;
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        depth++;
+        int flag = 0;
+        for (int i = 0; i < size; i++) {
+            TreeNode cur = queue.poll();
+            assert cur != null;
+            if (cur.left != null) {
+                queue.offer(cur.left);
+            }
+            if (cur.right != null) {
+                queue.offer(cur.right);
+            }
+            //当首次遍历到左右节点都为空的节点的时候说明此节点为最小高度，此时退出循环，flag的作用是告诉外层循环退出
+            if (cur.left == null && cur.right == null) {
+                flag = 1;
+                break;
+            }
+        }
+        if (flag == 1) {
+            break;
+        }
+    }
+    return depth;
+}
+```
+
+力扣实测，此解法耗时较少。
+
