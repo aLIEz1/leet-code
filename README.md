@@ -794,3 +794,45 @@ public int minDepth2(TreeNode root) {
 
 力扣实测，此解法耗时较少。
 
+
+
+
+
+### 力扣 110 平衡二叉树
+
+思路：分别求出左右子树的高度，然后如果差值小于等于1，则返回当前二叉树的高度，否则则返回-1，表示已经不是二叉树了
+
+每次递归前判断左子树或者右子树的值是否为-1；若为-1则直接返回-1；说明该树不平衡
+
+相当于后序遍历
+
+代码如下
+
+```java
+private int getDepth(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    int left = getDepth(root.left);
+    if (left == -1) {
+        return -1;
+    }
+    int right = getDepth(root.right);
+    if (right == -1) {
+        return -1;
+    }
+    int result;
+    if (Math.abs(left - right) > 1) {
+        result = -1;
+    } else {
+        result = Math.max(left, right) + 1;
+    }
+    return result;
+}
+
+public boolean isBalanced(TreeNode root) {
+    return getDepth(root) != -1;
+
+}
+```
+
