@@ -872,3 +872,55 @@ private void getPath(TreeNode root, String path, List<String> paths) {
 
 
 
+### 力扣404 左子叶之和
+
+
+
+此题根据当前节点不能判断是否是左子叶，要根据父节点判断
+
+具体逻辑是父节点左子树不为空，左子树的左右子树都是空的时候，父节点的左子树就是左叶子节点
+
+代码如下：
+
+```java
+public int sumOfLeftLeaves(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    int middleValue = 0;
+    if (root.left != null && root.left.left == null && root.left.right == null) {
+        middleValue = root.left.val;
+    }
+    return middleValue + sumOfLeftLeaves(root.left) + sumOfLeftLeaves(root.right);
+}
+```
+
+
+
+迭代写法如下
+
+```java
+public int sumOfLeftLeaves2(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    stack.push(root);
+    int result = 0;
+    while (!stack.isEmpty()) {
+        TreeNode cur = stack.pop();
+
+        if (cur.left != null && cur.left.left == null && cur.left.right == null) {
+            result += cur.left.val;
+        }
+        if (cur.right != null) {
+            stack.push(cur.right);
+        }
+        if (cur.left != null) {
+            stack.push(cur.left);
+        }
+    }
+    return result;
+}
+```
+
