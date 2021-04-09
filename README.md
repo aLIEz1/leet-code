@@ -966,3 +966,50 @@ public int findBottomLeftValue(TreeNode root) {
 ```
 
 或者可以先添加右边的再添加左边的，这样就是从右到左层序遍历，最后一个赋值的就是ans；
+
+
+
+
+
+### 力扣112 路径总和
+
+
+
+递归解法
+要注意返回true的条件是`targetSum==root.val`而非`targetSum==0`
+
+```java
+public boolean hasPathSum(TreeNode root, int targetSum) {
+    if (root==null){
+        return false;
+    }
+    //当targetSum==root.val的时候,说明targetSum-root==0,此时路径存在，直接返回true;
+    if (root.left==null&&root.right==null&&targetSum==root.val){
+        return true;
+    }
+    return hasPathSum(root.left,targetSum- root.val)||hasPathSum(root.right,targetSum-root.val);
+}
+```
+
+
+
+也可以将所有路径的和保存在一个HashSet中，然后判断是否右targetSum
+
+此解法耗时较长
+
+```java
+private void getSum(TreeNode root, int sum, Set<Integer> sums) {
+    if (root != null) {
+        int newSum = sum;
+        if (root.left == null && root.right == null) {
+            newSum+=root.val;
+            sums.add(newSum);
+        } else {
+            newSum += root.val;
+            getSum(root.left, newSum, sums);
+            getSum(root.right, newSum, sums);
+        }
+    }
+}
+```
+
