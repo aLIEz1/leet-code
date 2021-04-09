@@ -1195,3 +1195,39 @@ public boolean isValidBST(TreeNode root) {
 }
 ```
 
+
+
+
+
+### 力扣530 二叉搜索树的最小绝对差
+
+
+
+和上一题类似
+
+代码如下：
+
+```java
+TreeNode pre;
+int minAbs=Integer.MAX_VALUE;
+
+public void travel(TreeNode root) {
+    if (root == null) {
+        return;
+    }
+    travel(root.left);
+    if (pre != null) {
+        minAbs = Math.min(root.val - pre.val, minAbs);
+    }
+    pre = root;
+    travel(root.right);
+}
+
+public int getMinimumDifference(TreeNode root) {
+    travel(root);
+    return minAbs;
+}
+```
+
+
+
