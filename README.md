@@ -924,3 +924,45 @@ public int sumOfLeftLeaves2(TreeNode root) {
 }
 ```
 
+
+
+
+
+### 力扣513 找树左下角的值
+
+解法：层序遍历，每层遍历的第一个赋值给ans，最后返回的ans就是最左下角的值
+
+代码如下
+
+
+
+注意，`LinkedList` 使用`push`的时候相当于栈，使用`offer`的时候相当于队列
+
+```java
+public int findBottomLeftValue(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    LinkedList<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+    int ans=0;
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            TreeNode cur = queue.poll();
+            if (i == 0) {
+                ans = cur.val;
+            }
+            if (cur.left != null) {
+                queue.offer(cur.left);
+            }
+            if (cur.right != null) {
+                queue.offer(cur.right);
+            }
+        }
+    }
+    return ans;
+}
+```
+
+或者可以先添加右边的再添加左边的，这样就是从右到左层序遍历，最后一个赋值的就是ans；
