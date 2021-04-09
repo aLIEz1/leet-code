@@ -1013,3 +1013,60 @@ private void getSum(TreeNode root, int sum, Set<Integer> sums) {
 }
 ```
 
+
+
+
+
+
+
+### 力扣106 从中序与后序遍历序列构造二叉树
+
+此题思路是根据postorder数组中的最后一个数字确定当前节点的数值，
+
+- 如果postorder数组为空，则返回null
+- 如果postorder数组长度为1，说明该节点为叶子节点，直接返回即可
+- 如果不是上面两种情况则对数组进行分割，从中序数组中找到后序数组中最后一个值的索引
+- 根据索引将中序数组和后序数组分割成左右各两个
+- 构造左子树，将中左，后左传入
+- 构造右子树，将中右，后右传入
+
+代码如下
+
+注意分割数组的上下界问题
+
+
+
+```java
+public TreeNode buildTree(int[] inorder, int[] postorder) {
+    if (postorder.length == 0) {
+        return null;
+    }
+    int rootValue = postorder[postorder.length - 1];
+    TreeNode root = new TreeNode(rootValue);
+    if (postorder.length == 1) {
+        return root;
+    }
+    int delimiterIndex;
+    for (delimiterIndex = 0; delimiterIndex < inorder.length; delimiterIndex++) {
+        if (inorder[delimiterIndex] == rootValue) {
+            break;
+        }
+    }
+
+    int[] inLeft = new int[delimiterIndex];
+    int[] inRight = new int[inorder.length - delimiterIndex - 1];
+    System.arraycopy(inorder, 0, inLeft, 0, delimiterIndex);
+    System.arraycopy(inorder, delimiterIndex + 1, inRight, 0, inorder.length - delimiterIndex - 1);
+
+    int[] postLeft = new int[delimiterIndex];
+    int[] postRight = new int[postorder.length - delimiterIndex - 1];
+    System.arraycopy(postorder, 0, postLeft, 0, delimiterIndex);
+    System.arraycopy(postorder, delimiterIndex, postRight, 0, postorder.length - delimiterIndex - 1);
+
+    root.left = buildTree(inLeft, postLeft);
+    root.right = buildTree(inRight, postRight);
+    return root;
+
+}
+```
+
