@@ -1165,3 +1165,33 @@ public TreeNode searchBST3(TreeNode root, int val) {
 
 相等直接返回即可
 
+
+
+### 力扣98 验证二叉搜索树
+
+
+
+本题利用了二叉树中序遍历是个递增的有序序列的特征，把前一个遍历的节点存储起来，与当前节点比较，如果当前节点小于前一个节点，则说明不是二叉搜索树
+
+具体代码如下
+
+
+
+```java
+TreeNode pre;
+
+public boolean isValidBST(TreeNode root) {
+    if (root == null) {
+        return true;
+    }
+    boolean left = isValidBST(root.left);
+    if (pre != null && root.val <= pre.val) {
+        return false;
+    }
+    //记录前一个节点
+    pre = root;
+    boolean right = isValidBST(root.right);
+    return left && right;
+}
+```
+
