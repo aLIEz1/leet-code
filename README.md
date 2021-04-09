@@ -1070,3 +1070,98 @@ public TreeNode buildTree(int[] inorder, int[] postorder) {
 }
 ```
 
+
+
+
+
+
+
+### 力扣700 二叉搜索树中的搜索
+
+
+
+此题较简单，用迭代法和递归法各写一遍
+
+递归比较当前节点的数值和目标数值
+
+- 如果当前节点数值比目标数值大，则去节点的左子树寻找
+- 如果当前节点数值比目标节点小，则去节点的右子树寻找
+- 如果当前节点数值和目标数值相等，则放回当前节点
+
+
+
+代码如下
+
+递归法
+
+```java
+public TreeNode searchBST(TreeNode root, int val) {
+    if (root == null) {
+        return null;
+    }
+    if (root.val == val) {
+        return root;
+    } else if (root.val > val) {
+        return searchBST(root.left, val);
+    } else {
+        return searchBST(root.right, val);
+    }
+}
+```
+
+
+
+迭代法
+
+
+
+如果当前节点数值比目标数值大，左子树进栈，小则右子树进栈，相等返回当前树
+
+
+
+```java
+public TreeNode searchBST2(TreeNode root, int val) {
+    if (root == null) {
+        return null;
+    }
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    stack.push(root);
+    while (!stack.isEmpty()) {
+        TreeNode cur = stack.pop();
+        if (cur.val == val) {
+            return cur;
+        }
+        if (cur.val > val && cur.left != null) {
+            stack.push(cur.left);
+        }
+        if (cur.val < val && cur.right != null) {
+            stack.push(cur.right);
+        }
+    }
+    return null;
+}
+```
+
+简单的迭代法如下
+
+
+
+```java
+public TreeNode searchBST3(TreeNode root, int val) {
+    while (root != null) {
+        if (root.val > val) {
+            root = root.left;
+        } else if (root.val < val) {
+            root = root.right;
+        } else {
+            return root;
+        }
+    }
+    return null;
+}
+```
+
+思路就是当节点数值比目标数值大的时候令左子树等于当前节点，小的时候令右子树等于当前节点
+
+相等直接返回即可
+
