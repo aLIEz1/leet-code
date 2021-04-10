@@ -1678,3 +1678,38 @@ root.left = trimBST(root.left, low, high);
 ```
 
 此时节点3的右孩子就变成了节点2，将节点0从二叉搜索树中删除了
+
+
+
+
+
+### 力扣108 将有序数组转换成二叉搜索树
+
+
+
+解题思路：
+
+取数组中的中间元素当成一次遍历的根节点，然后利用类似二分查找的特点构造左子树和右子树
+
+
+
+```java
+private TreeNode traversal(int[] nums, int left, int right) {
+    if (left > right) {
+        return null;
+    }
+    int mid = left + ((right - left) / 2);
+    TreeNode root = new TreeNode(nums[mid]);
+    root.left = traversal(nums, left, mid - 1);
+    root.right = traversal(nums, mid + 1, right);
+    return root;
+}
+
+public TreeNode sortedArrayToBST(int[] nums) {
+    return traversal(nums, 0, nums.length - 1);
+}
+```
+
+
+
+此题利用了二分查找的特点，是一道经典题
