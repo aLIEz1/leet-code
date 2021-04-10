@@ -1373,3 +1373,110 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 }
 ```
 
+
+
+
+
+
+
+### 力扣701 二叉搜索树中的插入操作
+
+此题为搜索二叉搜索树中的插入位置
+
+递归解法为判断当前节点值是否大于给定的值，如果大于则判断当前节点左子树是否为空，若为空则直接插入，若不为空则递归插入左子树，右边类似
+
+
+
+需要注意，当树为空的时候，插入的值直接作为该树本身返回
+
+代码如下
+
+
+
+```java
+public void insert(TreeNode root, int val) {
+    if (root == null) {
+        return;
+    }
+    if (root.val > val) {
+        if (root.left != null) {
+            insert(root.left, val);
+        } else {
+            root.left = new TreeNode(val);
+            return;
+        }
+    }
+    if (root.val < val) {
+        if (root.right != null) {
+            insert(root.right, val);
+        } else {
+            root.right = new TreeNode(val);
+            return;
+        }
+    }
+
+}
+
+public TreeNode insertIntoBST(TreeNode root, int val) {
+    if (root == null) {
+        return new TreeNode(val);
+    }
+    insert(root, val);
+    return root;
+
+}
+```
+
+
+
+精简解法
+
+```java
+public TreeNode insertIntoBST2(TreeNode root, int val) {
+    if (root == null) {
+        return new TreeNode(val);
+    }
+    if (root.val > val) {
+        root.left = insertIntoBST2(root.left, val);
+    }
+    if (root.val < val) {
+        root.right = insertIntoBST2(root.right, val);
+    }
+    return root;
+}
+```
+
+
+
+迭代写法
+
+注意while循环过后`cur`为空 `cu`r的父节点为`pre`也就是要插入的`val`要插在`pre`节点的左子树或者右子树上
+
+判断一下再插入即可
+
+```java
+public TreeNode insertIntoBST3(TreeNode root, int val) {
+    if (root == null) {
+        return new TreeNode(val);
+    }
+    TreeNode cur = root;
+    TreeNode pre = root;
+    while (cur != null) {
+        pre = cur;
+        if (cur.val > val) {
+            cur = cur.left;
+        }
+        if (cur.val < val) {
+            cur = cur.right;
+        }
+    }
+    TreeNode node = new TreeNode(val);
+    if (val < pre.val) {
+        pre.left =node;
+    }else {
+        pre.right=node;
+    }
+    return root;
+}
+```
+
