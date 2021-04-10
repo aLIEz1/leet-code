@@ -1231,3 +1231,65 @@ public int getMinimumDifference(TreeNode root) {
 
 
 
+### 力扣501 二叉搜索树中的众数
+
+此题定义一个count用于统计树中的某一个元素出现的个数
+
+maxCount用于统计树中出现最多的那个数
+
+定义一个pre指向遍历二叉树时的前一个节点
+
+中序遍历，当前一个节点的数值与当前遍历到的数值相等时，count++；否则将count置1
+
+如果当前count等于maxCount说明此数为众数，加入到List集合中去
+
+如果当前count大于maxCount说明此数是新的众数
+
+令maxCount=count，将队列清空然后再加入当前节点的数值即可
+
+注意一定要先将队列清空再添加元素，因为当出现count大于maxCount的时候，队列里维护的就不再是众数了，应该及时删去，添加上新的众数
+
+
+
+代码如下
+
+
+
+```java
+public int[] findMode(TreeNode root) {
+    int maxCount = 0;
+    int count = 0;
+    TreeNode pre = null;
+    List<Integer> ans = new ArrayList<>();
+    if (root == null) {
+        return ans.stream().mapToInt(i -> i).toArray();
+    }
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    while (!stack.isEmpty() || root != null) {
+        while (root != null) {
+            stack.push(root);
+            root = root.left;
+        }
+        root = stack.pop();
+        if (pre == null) {
+            count = 1;
+        } else if (pre.val == root.val) {
+            count++;
+        } else {
+            count = 1;
+        }
+        if (count == maxCount) {
+            ans.add(root.val);
+        }
+        if (count > maxCount) {
+            maxCount = count;
+            ans.clear();
+            ans.add(root.val);
+        }
+        pre = root;
+        root = root.right;
+    }
+    return ans.stream().mapToInt(i -> i).toArray();
+}
+```
+
