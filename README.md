@@ -1620,3 +1620,61 @@ private TreeNode deleteOneNode(TreeNode cur) {
 }
 ```
 
+
+
+
+
+### 力扣 669 修剪二叉树
+
+
+
+```java
+/**
+     * 有返回值，更好操作
+     * 当当前节点的数值比low小或者比high大的时候删除该节点
+     * 比low小 删除该节点的左子树
+     * 修剪右子树
+     * 比high大 删除该节点的右子树
+     * 修剪左子树
+     *
+     * @param root
+     * @param low
+     * @param high
+     * @return
+     */
+
+public TreeNode trimBST(TreeNode root, int low, int high) {
+    if (root == null) {
+        return null;
+    }
+    if (root.val < low) {
+        return trimBST(root.right, low, high);
+    }
+    if (root.val > high) {
+        return trimBST(root.left, low, high);
+    }
+    root.left = trimBST(root.left, low, high);
+    root.right = trimBST(root.right, low, high);
+    return root;
+}
+```
+
+![](https://mmbiz.qpic.cn/mmbiz_png/ciaqDnJprwv4FjyiaXfwWAjHJACgpTUjzKRCnvKdw0b1kOeFeIRoWzEeeZKzJ0NFOndAz5qe3KKOccZzHybt0Fcw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+
+
+如下代码相当于把节点0的右孩子节点2返回个上一层
+
+```java
+if (root.val < low) {
+    return trimBST(root.right, low, high);
+}
+```
+
+然后下面代码相当于用节点3的左孩子把下一层返回的节点0的右孩子，节点2接住
+
+```java
+root.left = trimBST(root.left, low, high);
+```
+
+此时节点3的右孩子就变成了节点2，将节点0从二叉搜索树中删除了

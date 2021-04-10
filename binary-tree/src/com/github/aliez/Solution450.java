@@ -25,6 +25,7 @@ public class Solution450 {
                 cur = cur.right;
             }
         }
+        //找不到节点值等于key的情况
         if (cur==null){
             return root;
         }
