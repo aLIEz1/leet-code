@@ -1338,3 +1338,38 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 }
 ```
 
+
+
+
+
+
+
+### 力扣 235 二叉搜索树的最近公共祖先
+
+
+
+此题解法巧妙，前序遍历，如果当前节点在p和q的区间内则直接返回
+
+如果<---[]当前节点比p和q都小，则遍历该树的右子树
+
+如果[]--->当前节点比p和q都大，则遍历该树的左子树
+
+如果[----]则直接返回当前节点
+
+代码如下
+
+```java
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    while (root != null) {
+        if (root.val > q.val && root.val > p.val) {
+            root = root.left;
+        } else if (root.val < p.val && root.val < q.val) {
+            root = root.right;
+        } else {
+            return root;
+        }
+    }
+    return null;
+}
+```
+
