@@ -1480,3 +1480,143 @@ public TreeNode insertIntoBST3(TreeNode root, int val) {
 }
 ```
 
+
+
+
+
+
+
+### 力扣450 删除二叉搜索树中的节点
+
+
+
+思路：首先要找到当前要删除的节点，如果当前节点为空则直接返回空即可
+
+如果当前节点值与key相同，则进入判断
+
+- 当前节点的左子树为空，返回当前节点的右子树即可
+- 当前节点右子树为空，返回当前节点的左子树即可
+- 如果当前左子树和右子树都不为空，则将当前节点的左子树插入到当前节点的右子树的最左边的节点的左子树上，也就是比左子树数值大的最小的数的位置上
+- 如果当前节点数值大于key，则向左子树中寻找并删除
+- 如果当前节点小于key，则向右子树中寻找并删除
+
+
+
+具体代码如下
+
+
+
+```java
+public TreeNode deleteNode2(TreeNode root, int key) {
+    if (root == null) {
+        return null;
+    }
+    if (root.val == key) {
+        if (root.left == null) {
+            return root.right;
+        } else if (root.right == null) {
+            return root.left;
+        } else {
+            TreeNode cur = root.right;
+            while (cur.left != null) {
+                cur = cur.left;
+            }
+            cur.left = root.left;
+            //将当前节点删除
+            root = root.right;
+            return root;
+        }
+    }
+    if (root.val > key) {
+        root.left = deleteNode(root.left, key);
+    }
+    if (root.val < key) {
+        root.right = deleteNode(root.right, key);
+    }
+    return root;
+}
+```
+
+
+
+迭代写法如下，要保存当前遍历到的节点的前一个节点，定义一个指针pre
+
+当pre为空时说明该二叉搜索树只有一个根节点，返回null即可
+
+当pre左子树不为空且左子树的数值等于key时，进入删除逻辑
+
+- 当左子树的右子树为空时，令pre节点的左子树也就是cur节点等于cur的左子树即可
+- 当cur的左子树为空时，令cur等于cur的右子树即可
+- 当cur的左右子树都不为空时，将cur的左子树插入到cur右子树的最左子树的左子树上，也就是cur的左子树的后继节点，比cur左子树数值大的最小的树的位置上，然后返回cur的右子树即可
+
+
+
+代码如下
+
+```java
+public TreeNode deleteNode(TreeNode root, int key) {
+    if (root == null) {
+        return null;
+    }
+    TreeNode cur = root;
+    TreeNode pre = null;
+    while (cur != null) {
+        if (cur.val == key) {
+            break;
+        }
+        pre = cur;
+        if (cur.val > key) {
+            cur = cur.left;
+        }
+        if (cur.val < key) {
+            cur = cur.right;
+        }
+
+    }
+    //未找到要删除的节点，直接返回root节点即可
+    if(cur==null){
+        return root;
+    }
+    //只有头节点的情况
+    if (pre == null) {
+        return deleteOneNode(cur);
+    }
+    if (pre.left != null && pre.left.val == key) {
+        pre.left = deleteOneNode(cur);
+    }
+    if (pre.right != null && pre.right.val == key) {
+        pre.right = deleteOneNode(cur);
+    }
+    return root;
+}
+
+   
+```
+
+
+
+其中删除逻辑如下
+
+
+
+```java
+private TreeNode deleteOneNode(TreeNode cur) {
+    if (cur == null) {
+        return null;
+    }
+    if (cur.right == null) {
+        return cur.left;
+    }
+    if (cur.left==null){
+        return cur.right;
+    }
+    TreeNode temp = cur.right;
+    while (temp.left != null) {
+        temp = temp.left;
+    }
+    temp.left = cur.left;
+    return cur.right;
+
+}
+```
+
