@@ -1293,3 +1293,40 @@ public int[] findMode(TreeNode root) {
 }
 ```
 
+
+
+
+
+### 力扣236 二叉树的最近公共祖先
+
+
+
+此题利用后序遍历，自底向上层层回溯
+
+当遇到root与p或者q相等或者root为空的时候返回root
+
+遍历左子树和右子树，当左子树或者右子树有返回值的时候返回左子树或者右子树
+
+如果左右子树返回值都为空，则返回null
+
+
+
+代码如下
+
+```java
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == p || root == q || root == null) {
+        return root;
+    }
+    TreeNode left = lowestCommonAncestor(root.left, p, q);
+    TreeNode right = lowestCommonAncestor(root.right, p, q);
+    if (left != null && right != null) {
+        return root;
+    }
+    if (left == null) {
+        return right;
+    }
+    return left;
+}
+```
+
