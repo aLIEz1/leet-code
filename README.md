@@ -1744,3 +1744,53 @@ public TreeNode convertBST(TreeNode root) {
 }
 ```
 
+
+
+
+
+## 回溯算法
+
+
+
+
+
+### 力扣 77 组合
+
+
+
+终止条件：当path的大小等于k的时候，向结果集中添加`new ArrayList<>(path)`注意此时一定不能添加`path`过去，因为**path在后续过程中一直在改变**
+
+
+
+具体代码如下：
+
+```java
+LinkedList<Integer> path = new LinkedList<>();
+List<List<Integer>> ans = new ArrayList<>();
+
+private void backtracking(int n, int k, int startIndex) {
+    if (path.size() == k) {
+        ans.add(new ArrayList<>(path));
+        return;
+    }
+    for (int i = startIndex; i <= n; i++) {
+        path.add(i);
+        System.out.println("递归之前" + path);
+        backtracking(n, k, i + 1);
+        path.removeLast();
+        System.out.println("递归之后" + path);
+    }
+}
+
+public List<List<Integer>> combine(int n, int k) {
+    backtracking(n, k, 1);
+    return ans;
+}
+```
+
+
+
+**掌握调试技巧对理解回溯算法有重大意义**
+
+
+
