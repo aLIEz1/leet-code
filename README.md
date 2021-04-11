@@ -1713,3 +1713,34 @@ public TreeNode sortedArrayToBST(int[] nums) {
 
 
 此题利用了二分查找的特点，是一道经典题
+
+
+
+
+
+### 力扣 538 将二叉搜索树转换成累加树
+
+此题思路是，累加树反中序遍历是有序的，只需要定义一个sum，令sum=前一个节点的数值，每次遍历到一个节点只要将数值+sum即可
+
+
+
+代码如下
+
+
+
+```java
+int sum = 0;
+
+public TreeNode convertBST(TreeNode root) {
+    if (root == null) {
+        return null;
+    }
+    TreeNode right = convertBST(root.right);
+    int temp = root.val;
+    root.val += sum;
+    sum += temp;
+    TreeNode left = convertBST(root.left);
+    return root;
+}
+```
+
