@@ -19,7 +19,7 @@ public class Solution77 {
             ans.add(new ArrayList<>(path));
             return;
         }
-        for (int i = startIndex; i <= n; i++) {
+        for (int i = startIndex; i <= n - (k - path.size()) + 1; i++) {
             path.add(i);
             System.out.println("递归之前" + path);
             backtracking(n, k, i + 1);
