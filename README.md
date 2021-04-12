@@ -1812,7 +1812,7 @@ public List<List<Integer>> combine(int n, int k) {
 
 搜索起点的上界 + 接下来要选择的元素个数 - 1 = n
 
-` n - (k - path.size()) + 1`
+` n - (k - path.size()) + 1`就是搜索起点的上界
 
 剪枝优化后的代码如下
 
@@ -1839,4 +1839,122 @@ public List<List<Integer>> combine(int n, int k) {
     return ans;
 }
 ```
+
+
+
+
+
+### 力扣216 组合总和III
+
+此题与组合问题类似，但是要注意回溯的终止条件，以及要定义一个`sum`，`sum`在上一帧返回之后要进行回溯，`path`也要进行回溯
+
+代码如下
+
+
+
+```java
+LinkedList<Integer> path = new LinkedList<>();
+List<List<Integer>> ans = new ArrayList<>();
+
+int sum = 0;
+
+private void backtracking(int k, int n, int startIndex) {
+    if (sum>n){
+        return;
+    }
+    if (path.size() == k) {
+        if (sum == n) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+    }
+    for (int i = startIndex; i <= 9; i++) {
+        sum += i;
+        path.add(i);
+        backtracking(k, n, i + 1);
+        sum -= i;
+        path.pollLast();
+    }
+
+}
+
+public List<List<Integer>> combinationSum3(int k, int n) {
+    backtracking(k, n, 1);
+    return ans;
+
+}
+```
+
+
+
+对该回溯算法剪枝优化，需要注意当遍历的时候`sum`已经大于`targetNum`的时候直接返回到上一栈帧即可
+
+
+
+
+
+### 力扣 17 电话号码的字母组合
+
+注意该题将数字与字母的映射关系添加到map中极为方便
+
+另外，在取出每个字符串时一定要记得将当前字符串`-‘0’`方可得到当前字符串对应的数字
+
+
+
+这题每个数字对应的字符串的`长度`为遍历的`宽度`，数字的`数目`为回溯的`深度`，每次回溯深度+1，然后遍历宽度
+
+`index`指的是遍历的`深度`，也作为回溯返回的条件，同时也是每次回溯时取出哪个digit的依据
+
+
+
+代码如下
+
+
+
+```java
+List<String> ans = new ArrayList<>();
+StringBuilder sb = new StringBuilder();
+Map<Integer, String> map = new HashMap<>(16);
+
+
+private void backtracking(char[] array, int index) {
+    if (index == array.length) {
+        ans.add(String.valueOf(sb));
+        return;
+    }
+    int digit = array[index] - '0';
+    String letters = map.get(digit);
+    for (int i = 0; i < letters.length(); i++) {
+        sb.append(letters.charAt(i));
+        backtracking(array, index + 1);
+        sb.deleteCharAt(sb.length() - 1);
+    }
+
+}
+
+public List<String> letterCombinations(String digits) {
+    if (digits.length() == 0) {
+        return Collections.emptyList();
+    }
+    map.put(0, "");
+    map.put(1, "");
+    map.put(2, "abc");
+    map.put(3, "def");
+    map.put(4, "ghi");
+    map.put(5, "jkl");
+    map.put(6, "mno");
+    map.put(7, "pqrs");
+    map.put(8, "tuv");
+    map.put(9, "wxyz");
+    char[] array = digits.toCharArray();
+    backtracking(array, 0);
+    return ans;
+}
+```
+
+
+
+
+
+
 
