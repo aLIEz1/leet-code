@@ -2068,3 +2068,63 @@ public List<List<Integer>> combinationSum2(int[] candidates, int target) {
 
 
 
+
+
+### 力扣 131 分割回文串
+
+此题难点是切割点的选择，将`startIndex`到`i`切割出来然后判断是否为回文串，如果不是则跳过该层循环，如果是则加入到`path`中去。
+
+代码如下
+
+
+
+此题尽量不要使用`string`的`substring`方法
+
+自己通过`String`字符串的构造方法构造字符串
+
+`subString()`方法的参数是开始位置`beginIndex`和结束位置`endIndex`
+
+```java
+
+LinkedList<String> path = new LinkedList<>();
+List<List<String>> ans = new ArrayList<>();
+
+private boolean isPalindrome(char[] array, int left, int right) {
+    while (right > left) {
+        if (array[left] != array[right]) {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
+
+private void backtracking(char[] array, int startIndex) {
+    if (startIndex >= array.length) {
+        ans.add(new ArrayList<>(path));
+        return;
+    }
+    for (int i = startIndex; i < array.length; i++) {
+        if (!isPalindrome(array, startIndex, i)) {
+            continue;
+        }
+        String substring = new String(array, startIndex, i + 1 - startIndex);
+        path.add(substring);
+        backtracking(array, i + 1);
+        path.removeLast();
+
+    }
+}
+
+public List<List<String>> partition(String s) {
+    char[] array = s.toCharArray();
+    backtracking(array, 0);
+    return ans;
+}
+```
+
+
+
+
+
