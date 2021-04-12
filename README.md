@@ -2004,3 +2004,67 @@ public List<List<Integer>> combinationSum(int[] candidates, int target) {
 
 
 
+
+
+### 力扣 40组合总和
+
+注意此题要求是给定的数组中有重复数组，但是找出的组合不能有重复的，涉及到去重逻辑
+
+```
+输入: candidates = [10,1,2,7,6,1,5], target = 8,
+所求解集为:
+[
+  [1, 7],
+  [1, 2, 5],
+  [2, 6],
+  [1, 1, 6]
+]
+```
+
+注意：该题可以出现`[1,1,6]`这样的解集但是不允许`[1,2,5]`这样的解集出现两次
+
+思路是先排序数组，每次回溯过后，令当前数组元素等于pre，下次循环时如果pre与当前遍历到的元素相等，则直接跳过该层循环，相当于在整颗树上去重第一次选了1，第二次就不能重复选1了，但是每颗节点可以任意选择
+
+代码如下
+
+
+
+```java
+
+LinkedList<Integer> path = new LinkedList<>();
+List<List<Integer>> ans = new ArrayList<>();
+int sum = 0;
+int pre = 0;
+
+private void backtracking(int[] candidates, int target, int startIndex) {
+    if (sum > target) {
+        return;
+    }
+    if (sum == target) {
+        ans.add(new ArrayList<>(path));
+        return;
+    }
+    for (int i = startIndex; i < candidates.length&&candidates[i]+sum<=target; i++) {
+        if (pre == candidates[i]) {
+            continue;
+        }
+        path.add(candidates[i]);
+        sum += candidates[i];
+        backtracking(candidates, target, i + 1);
+        sum -= candidates[i];
+        path.removeLast();
+        pre = candidates[i];
+    }
+}
+
+public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+    Arrays.sort(candidates);
+    backtracking(candidates, target, 0);
+    return ans;
+}
+```
+
+
+
+
+
