@@ -1954,6 +1954,52 @@ public List<String> letterCombinations(String digits) {
 
 
 
+### 力扣39 组合总和
+
+
+
+此题为回溯法经典题型
+
+
+
+要注意，不能有重复的集合，当选了第0个的时候，接下来能从0开始选，当选了第1个的时候，接下来只能从1开始选了，剪枝优化是当sum>target的时候直接返回
+
+代码如下
+
+记录第一次 一次AC
+
+
+
+```java
+LinkedList<Integer> path = new LinkedList<>();
+List<List<Integer>> ans = new ArrayList<>();
+int sum = 0;
+
+private void backtracking(int[] candidates, int target, int startIndex) {
+
+    if (sum > target) {
+        return;
+    }
+    if (sum == target) {
+        ans.add(new ArrayList<>(path));
+        return;
+    }
+    for (int i = startIndex; i < candidates.length; i++) {
+        path.add(candidates[i]);
+        sum += candidates[i];
+        backtracking(candidates, target, i);
+        sum -= candidates[i];
+        path.removeLast();
+    }
+
+}
+
+public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    backtracking(candidates, target, 0);
+    return ans;
+}
+```
+
 
 
 
