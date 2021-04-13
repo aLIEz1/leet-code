@@ -2128,3 +2128,37 @@ public List<List<String>> partition(String s) {
 
 
 
+### 力扣93 IP地址复原，没有AC！！！
+
+
+
+### 力扣78 子集
+
+此题求子集是收集所有节点，所以不必在判断的时候加入结果集，直接加入即可
+
+代码如下
+
+```java
+LinkedList<Integer> path = new LinkedList<>();
+List<List<Integer>> ans = new ArrayList<>();
+
+private void backtracking(int[] nums, int startIndex) {
+    ans.add(new ArrayList<>(path));
+    if (startIndex >= nums.length) {
+        return;
+    }
+    for (int i = startIndex; i < nums.length; i++) {
+        path.add(nums[i]);
+        backtracking(nums, i + 1);
+        path.removeLast();
+    }
+
+}
+
+public List<List<Integer>> subsets(int[] nums) {
+    Arrays.sort(nums);
+    backtracking(nums, 0);
+    return ans;
+}
+```
+
