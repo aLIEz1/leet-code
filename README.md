@@ -2162,3 +2162,202 @@ public List<List<Integer>> subsets(int[] nums) {
 }
 ```
 
+
+
+
+
+### 力扣46 全排列
+
+此题要注意，之前使用过的元素可以重复使用，但是已经在path中的不能再重复使用了
+
+定义一个boolean数组，数组大小和给定数组的大小相同，记录再path中的元素
+
+
+
+代码如下
+
+
+
+```java
+LinkedList<Integer> path = new LinkedList<>();
+List<List<Integer>> ans = new ArrayList<>();
+boolean[] used;
+
+private void backtracking(int[] nums) {
+    if (path.size() == nums.length) {
+        ans.add(new ArrayList<>(path));
+        return;
+    }
+    for (int i = 0; i < nums.length; i++) {
+        if (used[i]) {
+            continue;
+        }
+        path.add(nums[i]);
+        used[i] = true;
+        backtracking(nums);
+        used[i] = false;
+        path.removeLast();
+    }
+}
+
+public List<List<Integer>> permute(int[] nums) {
+    used = new boolean[nums.length];
+    Arrays.fill(used, false);
+    backtracking(nums);
+    return ans;
+}
+```
+
+
+
+### 力扣47 全排列
+
+
+
+与上题类似，但是要加上树层去重的功能，所以再for循环外面定义一个`hashset`检测到`hashset`中有当前元素的时候就直接`continue`
+
+
+
+代码如下
+
+```java
+LinkedList<Integer> path = new LinkedList<>();
+List<List<Integer>> ans = new ArrayList<>();
+boolean[] used;
+
+private void backtracking(int[] nums){
+    if(path.size()==nums.length){
+        ans.add(new ArrayList(path));
+        return;
+    }
+    Set<Integer> hashset = new HashSet<>();
+    for(int i=0;i<nums.length;i++){
+        if(used[i]||hashset.contains(nums[i])){
+            continue;
+        }
+        path.add(nums[i]);
+        used[i]=true;
+        hashset.add(nums[i]);
+        backtracking(nums);
+        used[i]=false;
+        path.removeLast();
+    }
+}
+
+public List<List<Integer>> permuteUnique(int[] nums) {
+    used = new boolean[nums.length];
+    Arrays.fill(used,false);
+    backtracking(nums);
+    return ans;
+}
+```
+
+
+
+
+
+### 力扣332 重新安排行程涉及到图论贪心算法，未解决！！！
+
+
+
+### 力扣 51 N皇后
+
+重点理解 同一行不能有两个，同一列不能有两个，对角线不能有两个
+
+
+
+这样判断是否能放皇后的逻辑就变成了
+
+因为每次都是遍历一行，只取一个元素，所以不需要判断一行中有重复的皇后
+
+因为在单层搜索的过程中，每一层递归，只会选for循环（也就是同一行）里的一个元素，所以不用去重了。
+
+将棋盘定义为一个char型二维数组
+
+其中每一行是`ans`中的一个`list`
+
+```java
+private boolean isValid(int n, int row, int col) {
+    //同一列有Q
+    for (int i = 0; i < n; i++) {
+        if (chessboard[i][col] == 'Q') {
+            return false;
+        }
+    }
+    //45°对角线有Q
+    for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+        if (chessboard[i][j] == 'Q') {
+            return false;
+        }
+    }
+    //135°对角线有Q
+    for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+        if (chessboard[i][j] == 'Q') {
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+
+
+完整代码如下
+
+
+
+```java
+
+List<List<String>> ans = new ArrayList<>();
+char[][] chessboard;
+
+private boolean isValid(int n, int row, int col) {
+    //同一列有Q
+    for (int i = 0; i < n; i++) {
+        if (chessboard[i][col] == 'Q') {
+            return false;
+        }
+    }
+    //45°对角线有Q
+    for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+        if (chessboard[i][j] == 'Q') {
+            return false;
+        }
+    }
+    //135°对角线有Q
+    for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+        if (chessboard[i][j] == 'Q') {
+            return false;
+        }
+    }
+    return true;
+}
+
+private void backtracking(int n, int row) {
+    if (row == n) {
+        List<String> path = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            path.add(new String(chessboard[i]));
+        }
+        ans.add(path);
+    }
+    for (int col = 0; col < n; col++) {
+        if (isValid(n, row, col)) {
+            chessboard[row][col] = 'Q';
+            backtracking(n, row + 1);
+            chessboard[row][col] = '.';
+        }
+    }
+}
+
+
+public List<List<String>> solveNQueens(int n) {
+    chessboard = new char[n][n];
+    for (int i = 0; i < n; i++) {
+        Arrays.fill(chessboard[i], '.');
+    }
+    backtracking(n, 0);
+    return ans;
+}
+```
+
