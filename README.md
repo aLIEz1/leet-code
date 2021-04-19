@@ -2377,7 +2377,7 @@ public List<List<String>> solveNQueens(int n) {
 
 ### 力扣455 分发饼干
 
-大的饼干最先满足它能满足胃口最大的孩子，因为只需要返回满足几个孩子，将数组排序后从后向前遍历数组g，判断s[index]是否大于等于g[i]若大于则说明找到了，小于则说明这块饼干满足不了这个孩子，i--即可
+大的饼干最先满足它能满足胃口最大的孩子，因为只需要返回满足几个孩子，将数组排序后从后向前遍历数组`g`，判断`s[index]`是否大于等于`g[i]`若大于则说明找到了，小于则说明这块饼干满足不了这个孩子，`i--`即可
 
 
 
@@ -2402,4 +2402,46 @@ public int findContentChildren(int[] g, int[] s) {
 
 
 局部最优是大块饼干先满足胃口大的孩子，全局最优是饼干满足最多的孩子
+
+
+
+
+
+
+
+### 力扣376 摆动序列
+
+
+
+此题利用贪心算法，删除除去收尾的递增或递减节点，该题解法较为巧妙，比较前一对差值和当前一对差值，如果当前一对差值和前一对差值符号不同，则说明遇到峰值，将`result++`即可，统计峰值的个数即为摆动序列的最大长度
+
+
+
+代码如下
+
+
+
+```java
+public int wiggleMaxLength(int[] nums) {
+    if (nums.length <= 2) {
+        return nums.length;
+    }
+    //当前一对的差值
+    int curDiff = 0;
+    //前一对的差值
+    int preDiff = 0;
+    //峰值个数
+    int result = 1;
+    for (int i = 1; i < nums.length; i++) {
+        curDiff = nums[i] - nums[i - 1];
+        if ((curDiff > 0 && preDiff <= 0) || (preDiff >= 0 && curDiff < 0)) {
+            result++;
+            preDiff = curDiff;
+        }
+    }
+    return result;
+}
+```
+
+时间复杂度为O(n)
 
