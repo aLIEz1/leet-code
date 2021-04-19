@@ -2361,3 +2361,45 @@ public List<List<String>> solveNQueens(int n) {
 }
 ```
 
+
+
+
+
+
+
+
+
+## 贪心算法
+
+> 总体思想是局部最优从而达到全局最优
+
+
+
+### 力扣455 分发饼干
+
+大的饼干最先满足它能满足胃口最大的孩子，因为只需要返回满足几个孩子，将数组排序后从后向前遍历数组g，判断s[index]是否大于等于g[i]若大于则说明找到了，小于则说明这块饼干满足不了这个孩子，i--即可
+
+
+
+代码如下
+
+```java
+public int findContentChildren(int[] g, int[] s) {
+    int index = s.length - 1;
+    int count = 0;
+    Arrays.sort(g);
+    Arrays.sort(s);
+    for (int i = g.length - 1; i >= 0; i--) {
+        if (index >= 0 && s[index] >= g[i]) {
+            index--;
+            count++;
+        }
+    }
+    return count;
+}
+```
+
+
+
+局部最优是大块饼干先满足胃口大的孩子，全局最优是饼干满足最多的孩子
+
