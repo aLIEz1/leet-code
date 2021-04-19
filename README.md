@@ -2445,3 +2445,56 @@ public int wiggleMaxLength(int[] nums) {
 
 时间复杂度为O(n)
 
+
+
+
+
+### 力扣53 最大子序和
+
+遍历`nums`，从头开始用`count`累积，如果`count`一旦加上`nums[i]`变为负数，那么就应该从`nums[i+1]`开始从0累积`count`了，因为已经变为负数的`count`，只会拖累总和。
+
+
+
+代码如下
+
+
+
+```java
+public int maxSubArray(int[] nums) {
+    int ans = Integer.MIN_VALUE;
+    int count = 0;
+    for (int num : nums) {
+        count += num;
+        if (count > ans) {
+            ans = count;
+        }
+        if (count <= 0) {
+            count = 0;
+        }
+    }
+    return ans;
+}
+```
+
+
+
+
+
+
+
+### 力扣122 买卖股票的最佳时机II
+
+每次只收集正利润，最后收集的利润是最高的，局部最优推导出全局最优
+
+
+
+```java
+public int maxProfit(int[] prices) {
+    int result = 0;
+    for (int i = 1; i < prices.length; i++) {
+        result += Math.max(prices[i] - prices[i - 1], 0);
+    }
+    return result;
+}
+```
+
