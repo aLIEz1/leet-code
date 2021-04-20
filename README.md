@@ -2532,3 +2532,52 @@ public boolean canJump(int[] nums) {
 }
 ```
 
+
+
+
+
+
+
+### 力扣45 跳跃游戏II
+
+定义一个`curDistance`记录当前达到的最大距离，定义一个`nextDistance`记录当前覆盖范围内的元素的最大f覆盖范围如果当前指针达到了`curDistance`最大范围则判断一下当前`curDistance`是否达到数组最后一个元素，如果有直接返回结果即可，如果没有则步数加1，将`nextDistance`赋值给`curDistance`
+
+
+
+
+
+代码如下
+
+
+
+```java
+public int jump(int[] nums) {
+    if (nums.length == 1) {
+        return 0;
+    }
+    int step = 0;
+    int curDistance = 0;
+    int nextDistance = 0;
+    for (int i = 0; i <= nums.length; i++) {
+        //下一步能覆盖的最大范围
+        nextDistance = Math.max(nums[i] + i, nextDistance);
+        //走到当前最大覆盖范围了
+        if (i == curDistance) {
+            //还没有到最后一个元素
+            if (curDistance != nums.length - 1) {
+                step++;
+                curDistance = nextDistance;
+                if (nextDistance >= nums.length - 1) {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+    }
+    return step;
+}
+```
+
+
+
