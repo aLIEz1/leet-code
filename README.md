@@ -2498,3 +2498,37 @@ public int maxProfit(int[] prices) {
 }
 ```
 
+
+
+
+
+
+
+### 力扣55 跳跃游戏
+
+
+
+此题利用贪心算法，判断能否到达最后一个只需要判断覆盖范围是否能到数组长度-1即可
+
+定义一个for循环在0和cover中循环每次遇到比cover大的覆盖范围就把大的覆盖范围赋值给cover
+
+最后判断一下cover是否大于等于数组长度-1即可
+
+贪心算法
+
+```java
+public boolean canJump(int[] nums) {
+    if (nums.length == 1) {
+        return true;
+    }
+    int cover = nums[0];
+    for (int i = 0; i <= cover; i++) {
+        cover = Math.max(nums[i] + i, cover);
+        if (cover >= nums.length - 1) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
