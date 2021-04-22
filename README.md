@@ -2581,3 +2581,79 @@ public int jump(int[] nums) {
 
 
 
+
+
+
+
+### 力扣1005 K次取反后最大化的数组和
+
+
+
+此题用到快速排序，不熟悉快速排序导致算法时间复杂度底下
+
+此题利用贪心算法，如果数组中有绝对值大的负数则先翻转绝对值大的负数，如果全部都为正了则将最小的那个数反复反转直到K为0
+
+快速排序算法如下，此题是利用绝对值来排序
+
+
+
+```java
+private void quickSort(int[] nums, int left, int right) {
+    if (left < right) {
+        int partitionIndex = partition(nums, left, right);
+        quickSort(nums, left, partitionIndex - 1);
+        quickSort(nums, partitionIndex + 1, right);
+    }
+}
+
+private int partition(int[] nums, int left, int right) {
+    swap(nums, left, (left + right) >> 1);
+
+    int pivot = left;
+    int index = pivot + 1;
+    for (int i = index; i <= right; i++) {
+        if (Math.abs(nums[i]) > Math.abs(nums[pivot])) {
+            swap(nums, i, index);
+            index++;
+        }
+    }
+    swap(nums, pivot, --index);
+    return index;
+}
+
+private void swap(int[] nums, int p1, int p2) {
+    if (p1 == p2) return;
+    int tmp = nums[p1];
+    nums[p1] = nums[p2];
+    nums[p2] = tmp;
+}
+```
+
+
+
+
+
+完整无快速排序的代码如下
+
+
+
+```java
+public int largestSumAfterKNegations(int[] A, int K) {
+
+    int sum = 0;
+    int[] absA = Arrays.stream(A).boxed().sorted(Comparator.comparingInt(Math::abs)).mapToInt(i -> i).toArray();
+    for (int i = absA.length - 1; i >= 0; i--) {
+        if (absA[i] < 0 && K > 0) {
+            absA[i] *= -1;
+            K--;
+        }
+        sum += absA[i];
+
+    }
+    if (K > 0 && K % 2 != 0) {
+        return sum - 2 * absA[0];
+    }
+    return sum;
+}
+```
+
