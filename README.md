@@ -2696,3 +2696,53 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 }
 ```
 
+
+
+
+
+### 力扣860 柠檬水找零
+
+此题 10元 5元都是固定套路，当顾客给20的时候要优先找给顾客10元，因为相对于10元5元更加万能
+
+
+
+具体代码如下
+
+
+
+```java
+
+public boolean lemonadeChange(int[] bills) {
+    int five = 0;
+    int ten = 0;
+    for (int bill : bills) {
+        if (bill == 5) {
+            five++;
+        }
+        if (bill == 10) {
+            if (five != 0) {
+                five--;
+                ten++;
+            } else {
+                return false;
+            }
+        }
+        if (bill == 20) {
+            if (ten != 0) {
+                if (five != 0) {
+                    ten--;
+                    five--;
+                } else {
+                    return false;
+                }
+            } else if (five >= 3) {
+                five -= 3;
+            } else {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+```
+
