@@ -2657,3 +2657,42 @@ public int largestSumAfterKNegations(int[] A, int K) {
 }
 ```
 
+
+
+
+
+
+
+### 力扣134 加油站
+
+此题利用贪心算法，如果当前前面剩余总和小于0了，则说明至少要从后面一个开始才能保证跑一圈，如果还小于0则再后面一个
+
+
+
+具体代码如下
+
+如果全部总和都小于0说明无论从哪开始都跑不了一圈
+
+
+
+```java
+public int canCompleteCircuit(int[] gas, int[] cost) {
+    int minAbsCost = Integer.MAX_VALUE;
+    int start = 0;
+    int totalSum = 0;
+    int curSum = 0;
+    for (int i = 0; i < gas.length; i++) {
+        curSum += gas[i] - cost[i];
+        totalSum += gas[i] - cost[i];
+        if (curSum < 0) {
+            start = i + 1;
+            curSum = 0;
+        }
+    }
+    if (totalSum < 0) {
+        return -1;
+    }
+    return start;
+}
+```
+
