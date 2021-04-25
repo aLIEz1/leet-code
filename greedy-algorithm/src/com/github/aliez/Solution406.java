@@ -2,6 +2,7 @@ package com.github.aliez;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * 406 根据身高重建队列
@@ -11,95 +12,25 @@ import java.util.LinkedList;
  */
 public class Solution406 {
 
-    static class MyList<T> {
-        static class LinkNode<T> {
-            T val;
-            LinkNode<T> next;
-
-            public LinkNode(T val) {
-                this.val = val;
-                this.next = null;
-            }
-
-            public LinkNode() {
-            }
-        }
-
-        private LinkNode<T> dummyHead;
-        private int size;
-
-        public MyList() {
-            this.dummyHead = new LinkNode<T>();
-            this.size = 0;
-
-        }
-
-        public T get(int index) {
-            if (index > (size - 1) || index < 0) {
-                return null;
-            }
-            LinkNode<T> cur = dummyHead.next;
-            while (index-- > 0) {
-                cur = cur.next;
-            }
-            return cur.val;
-
-        }
-
-        public void addAtTail(T val) {
-            LinkNode<T> ln = new LinkNode<>();
-            ln.val = val;
-            LinkNode<T> cur = dummyHead;
-            while (cur.next != null) {
-                cur = cur.next;
-            }
-            cur.next = ln;
-            size++;
-        }
-
-        public void addAtIndex(int index, T val) {
-            if (index > size) {
-                return;
-            }
-            LinkNode<T> ln = new LinkNode<>(val);
-            LinkNode<T> cur = dummyHead;
-            while (index-- > 0) {
-                cur = cur.next;
-            }
-            ln.next = cur.next;
-            cur.next = ln;
-            size++;
-
-        }
-
-        public void deleteAtIndex(int index) {
-            if (index >= size || index < 0) {
-                return;
-            }
-            LinkNode<T> cur = dummyHead;
-            while (index-- > 0) {
-                cur = cur.next;
-            }
-            cur.next = cur.next.next;
-            size--;
-        }
-
-    }
 
     public int[][] reconstructQueue(int[][] people) {
         quickSort(people, 0, people.length - 1);
-        MyList<int[]> list = new MyList<>();
-        for (int[] person : people) {
-            list.addAtTail(person);
-        }
-        for (int i = 0; i < people.length; i++) {
+        LinkedList<int[]> list = new LinkedList<>();
 
-        }
-        int[][] newPeople = new int[people.length][];
         for (int i = 0; i < people.length; i++) {
-            newPeople[i] = list.get(i);
+            list.add(people[i]);
         }
-        return newPeople;
+
+        for (int i = 0; i < people.length; i++) {
+            int position = people[i][1];
+            ListIterator<int[]> listIterator = list.listIterator(position);
+            listIterator.add(people[i]);
+        }
+        int[][] ans = new int[people.length][];
+        for (int i = 0; i < people.length; i++) {
+            ans[i] = list.get(i);
+        }
+        return ans;
     }
 
     private void quickSort(int[][] nums, int left, int right) {
@@ -134,13 +65,17 @@ public class Solution406 {
     }
 
     public static void main(String[] args) {
-        int[][] people = new int[6][];
-        people[0] = new int[]{7, 0};
-        people[1] = new int[]{4, 4};
-        people[2] = new int[]{7, 1};
-        people[3] = new int[]{5, 0};
-        people[4] = new int[]{6, 1};
-        people[5] = new int[]{5, 2};
+        int[][] people = new int[10][];
+        people[0] = new int[]{9, 0};
+        people[1] = new int[]{7, 0};
+        people[2] = new int[]{1, 9};
+        people[3] = new int[]{3, 0};
+        people[4] = new int[]{2, 7};
+        people[5] = new int[]{5, 3};
+        people[6] = new int[]{6, 0};
+        people[7] = new int[]{3, 4};
+        people[8] = new int[]{6, 2};
+        people[9] = new int[]{5, 2};
         System.out.println(Arrays.deepToString(new Solution406().reconstructQueue(people)));
     }
 }
