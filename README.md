@@ -2893,3 +2893,44 @@ public int eraseOverlapIntervals(int[][] intervals) {
 Arrays.sort(intervals, Comparator.comparingInt(a -> a[1]));
 ```
 
+
+
+### 力扣763 划分字母区间
+
+
+
+此题思路是统计每一个字母的边界**「如果找到之前遍历过的所有字母的最远边界，说明这个边界就是分割点了」**。此时前面出现过所有字母，最远也就到这个边界了。
+
+具体步骤如下
+
+- 统计每一个字符最后出现的位置
+- 从头遍历字符，并更新字符的最远出现下标，如果找到字符最远出现位置下标和当前下标相等了，则找到了分割点
+
+
+
+代码如下
+
+
+
+```java
+public List<Integer> partitionLabels(String S) {
+    List<Integer> ans = new ArrayList<>();
+    char[] array = S.toCharArray();
+    int[] alpha = new int[27];
+    for (int i = 0; i < array.length; i++) {
+        alpha[array[i] - 'a'] = i;
+    }
+    int left = 0;
+    int right = 0;
+    for (int i = 0; i < array.length; i++) {
+        right = Math.max(right, alpha[array[i] - 'a']);
+        if (i == right) {
+            ans.add(right - left + 1);
+            left = i + 1;
+        }
+    }
+    return ans;
+
+}
+```
+
