@@ -2746,3 +2746,150 @@ public boolean lemonadeChange(int[] bills) {
 }
 ```
 
+
+
+
+
+
+
+### 力扣452 用最少的箭引爆气球
+
+
+
+此题先使用快速排序对二维数组进行升序排序，然后比对后一个的上界与前一个的下界，如果有重叠即后一个上界小于上一个下界此时需要一个气球引爆当前遍历到的气球，不断更新右边界，右边界为最小右边界，如果后一个比最小右边界大则需要一个箭
+
+
+
+代码如下
+
+
+
+```java
+private void quickSort(int[][] nums, int left, int right) {
+    if (left < right) {
+        int partitionIndex = partition(nums, left, right);
+        quickSort(nums, left, partitionIndex - 1);
+        quickSort(nums, partitionIndex + 1, right);
+    }
+}
+
+private int partition(int[][] nums, int left, int right) {
+    swap(nums, left, (left + right) >> 1);
+    int pivot = left;
+    int index = pivot + 1;
+    for (int i = index; i <= right; i++) {
+        if (nums[i][0] < nums[pivot][0]) {
+            swap(nums, i, index);
+            index++;
+        }
+    }
+    swap(nums, pivot, --index);
+    return index;
+}
+
+private void swap(int[][] nums, int p1, int p2) {
+    if (p1 == p2) {
+        return;
+    }
+    int[] tmp = nums[p1];
+    nums[p1] = nums[p2];
+    nums[p2] = tmp;
+}
+
+public int findMinArrowShots(int[][] points) {
+    if (points.length == 0) {
+        return 0;
+    }
+    quickSort(points, 0, points.length - 1);
+    int ans = 1;
+    for (int i = 1; i < points.length; i++) {
+        if (points[i][0] > points[i - 1][1]) {
+            ans++;
+        } else {
+            points[i][1] = Math.min(points[i - 1][1], points[i][1]);
+        }
+    }
+    return ans;
+}
+```
+
+
+
+
+
+
+
+### 力扣435 无重叠区间
+
+按照上界排序，上界小的说明留给后面的多，按照右边界排序，就要从左向右遍历，因为右边界越小越好，只要右边界越小，留给下一个区间的空间就越大，所以从左向右遍历，优先选右边界小的。
+
+我们要选最多的非交叉区间，最后用区间总数减去非交叉区间就能算出最少移除多少就能不重复
+
+每次取非交叉区间的时候，都是取右边界最小的来做分割点（这样留给下一个区间的空间就越大），所以第一条分割线就是区间1结束的位置
+
+
+
+代码如下
+
+
+
+```java
+private void quickSort(int[][] nums, int left, int right) {
+    if (left < right) {
+        int partitionIndex = partition(nums, left, right);
+        quickSort(nums, left, partitionIndex - 1);
+        quickSort(nums, partitionIndex + 1, right);
+    }
+}
+
+private int partition(int[][] nums, int left, int right) {
+    swap(nums, left, (left + right) >> 1);
+    int pivot = left;
+    int index = pivot + 1;
+    for (int i = index; i <= right; i++) {
+        if (nums[i][1] < nums[pivot][1]) {
+            swap(nums, i, index);
+            index++;
+        }
+    }
+    swap(nums, pivot, --index);
+    return index;
+}
+
+private void swap(int[][] nums, int p1, int p2) {
+    if (p1 == p2) {
+        return;
+    }
+    int[] tmp = nums[p1];
+    nums[p1] = nums[p2];
+    nums[p2] = tmp;
+}
+
+public int eraseOverlapIntervals(int[][] intervals) {
+    if (intervals.length == 0) {
+        return 0;
+    }
+    quickSort(intervals, 0, intervals.length - 1);
+    int count = 1;
+    int end = intervals[0][1];
+    for (int i = 1; i < intervals.length; i++) {
+        //记录非交叉区间
+        if (end <= intervals[i][0]) {
+            end = intervals[i][1];
+            count++;
+        }
+
+    }
+    //返回区间总数减去非交叉区间就是要求的
+    return intervals.length - count;
+}
+```
+
+ 
+
+以上QuickSort可以使用下面一行代码代替
+
+```java
+Arrays.sort(intervals, Comparator.comparingInt(a -> a[1]));
+```
+
