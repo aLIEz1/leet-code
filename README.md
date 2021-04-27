@@ -2943,3 +2943,51 @@ public List<Integer> partitionLabels(String S) {
 
 
 按照每个数组的左边界排序，将数组添加到`list`集合中，当遇到下一个数组的左边界小于等于当前`list`中的最后一个的右边界的时候，说明有重叠，更新`list`中数组的右边界的值即可，如果大于，直接加入到`list`数组中去即可
+
+代码如下
+
+
+
+```java
+public int[][] merge(int[][] intervals) {
+    LinkedList<int[]> list = new LinkedList<>();
+    if (intervals.length == 1) {
+        return intervals;
+    }
+    Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+    list.add(intervals[0]);
+    for (int i = 1; i < intervals.length; i++) {
+        if (list.peekLast()[1] >= intervals[i][0]) {
+            list.peekLast()[1] = Math.max(list.peekLast()[1], intervals[i][1]);
+        } else {
+            list.add(intervals[i]);
+        }
+    }
+    int[][] ans = new int[list.size()][];
+    ListIterator<int[]> it = list.listIterator();
+    int i = 0;
+    while (it.hasNext()) {
+        ans[i] = it.next();
+        i++;
+    }
+    return ans;
+
+}
+```
+
+
+
+如下方法可以直接将`List<int[]> list`转换成`int[][]`
+
+```java
+return list.toArray(new int[list.size()][]);
+```
+
+
+
+
+
+### 力扣714 买卖股票的最佳时机含手续费
+
+此题使用贪心算法未理解，后期使用动态规划解题
+

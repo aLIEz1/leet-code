@@ -1,9 +1,9 @@
 package com.github.aliez;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.List;
 
 /**
  * 56 合并区间
@@ -13,27 +13,20 @@ import java.util.ListIterator;
  */
 public class Solution56 {
     public int[][] merge(int[][] intervals) {
-        LinkedList<int[]> list = new LinkedList<>();
+        List<int[]> list = new ArrayList<>();
         if (intervals.length == 1) {
             return intervals;
         }
         Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
         list.add(intervals[0]);
         for (int i = 1; i < intervals.length; i++) {
-            if (list.peekLast()[1] >= intervals[i][0]) {
-                list.peekLast()[1] = Math.max(list.peekLast()[1], intervals[i][1]);
+            if (list.get(list.size() - 1)[1] >= intervals[i][0]) {
+                list.get(list.size() - 1)[1] = Math.max(list.get(list.size() - 1)[1], intervals[i][1]);
             } else {
                 list.add(intervals[i]);
             }
         }
-        int[][] ans = new int[list.size()][];
-        ListIterator<int[]> it = list.listIterator();
-        int i = 0;
-        while (it.hasNext()) {
-            ans[i] = it.next();
-            i++;
-        }
-        return ans;
+        return list.toArray(new int[list.size()][]);
 
     }
 
