@@ -8,25 +8,23 @@ package com.github.aliez;
  */
 public class Solution714 {
     public int maxProfit(int[] prices, int fee) {
-        int ans = 0;
-        int minPrice = prices[0];
-        for (int price : prices) {
-            if (price < minPrice) {
-                minPrice = price;
-            }
-            //此时亏本，保持原有状态即可
-            if (price <= minPrice + fee) {
-                continue;
-            }
-            //此时有利可图
-            if (price > minPrice + fee) {
-                //卖出
-                ans += price - minPrice - fee;
-
-                //TODO 使用动态规划解题，这一步不太懂
-                minPrice = price - fee;
-            }
+        int[][] dp = new int[prices.length][2];
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i] - fee);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
         }
-        return ans;
+        return dp[prices.length - 1][0];
+    }
+
+    public int maxProfit2(int[] prices, int fee) {
+        int sell = 0;
+        int buy = -prices[0];
+        for (int price : prices) {
+            sell = Math.max(sell, buy + price - fee);
+            buy = Math.max(buy, sell - price);
+        }
+        return sell;
     }
 }

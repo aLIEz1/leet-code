@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/backtracking-algorithm/backtracking-algorithm.iml" filepath="$PROJECT_DIR$/backtracking-algorithm/backtracking-algorithm.iml" />
       <module fileurl="file://$PROJECT_DIR$/binary-tree/binary-tree.iml" filepath="$PROJECT_DIR$/binary-tree/binary-tree.iml" />
       <module fileurl="file://$PROJECT_DIR$/byte-dance-interview/byte-dance-interview.iml" filepath="$PROJECT_DIR$/byte-dance-interview/byte-dance-interview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dynamic-programming/dynamic-programming.iml" filepath="$PROJECT_DIR$/dynamic-programming/dynamic-programming.iml" />
       <module fileurl="file://$PROJECT_DIR$/greedy-algorithm/greedy-algorithm.iml" filepath="$PROJECT_DIR$/greedy-algorithm/greedy-algorithm.iml" />
       <module fileurl="file://$PROJECT_DIR$/hash-table/hash-table.iml" filepath="$PROJECT_DIR$/hash-table/hash-table.iml" />
       <module fileurl="file://$PROJECT_DIR$/leet-code.iml" filepath="$PROJECT_DIR$/leet-code.iml" />
