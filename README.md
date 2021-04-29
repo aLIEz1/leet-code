@@ -3039,3 +3039,32 @@ public int fib(int n) {
 }
 ```
 
+
+
+
+
+### 力扣 70 爬楼梯
+
+
+
+此题与上一题斐波那契数类似
+
+难点是推导出dp数组的状态转移公式，当在第一层的时候，只有一种方法，第二层的时候，有两种，第三层的时候有三种，第四层的时候有五种，推出公式为`dp[i]=dp[i-1]+dp[i+2]`
+
+代码如下
+
+```java
+public int climbStairs(int n) {
+    if (n <= 2) {
+        return n;
+    }
+    int[] dp = new int[n + 1];
+    dp[1] = 1;
+    dp[2] = 2;
+    for (int i = 3; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+}
+```
+
