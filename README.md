@@ -3068,3 +3068,33 @@ public int climbStairs(int n) {
 }
 ```
 
+
+
+
+
+### 力扣 746 使用最小花费爬楼梯
+
+
+
+此题可以从第一层第二层来开始，`dp[i]是由dp[i-1] dp[i-2]推出`，取最小的可以确定递推公式为
+
+`dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];`
+
+最后不要忘了返回的时候比较一下倒数第一个和倒数第二个的大小，因为`dp[i-1]`不一定是最小花费，也可能是`dp[i-2]`
+
+
+
+代码如下
+
+```java
+public int minCostClimbingStairs(int[] cost) {
+    int[] dp = new int[cost.length];
+    dp[0] = cost[0];
+    dp[1] = cost[1];
+    for (int i = 2; i < cost.length; i++) {
+        dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
+    }
+    return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
+}
+```
+
