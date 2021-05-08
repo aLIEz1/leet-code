@@ -3001,11 +3001,11 @@ return list.toArray(new int[list.size()][]);
 
 解题步骤
 
-- 确定dp数组（dp table）以及下标的含义
+- 确定`dp`数组（`dp table`）以及下标的含义
 - 确定递推公式
-- dp数组如何初始化
+- `dp`数组如何初始化
 - 确定遍历顺序
-- 举例推导dp数组
+- 举例推导`dp`数组
 
 
 
@@ -3015,7 +3015,7 @@ return list.toArray(new int[list.size()][]);
 
 
 
-经典的dp题，根据前两个的状态推出当前的状态，但是要注意DP数组初始化的大小，DP数组应初始化为n+1
+经典的`dp`题，根据前两个的状态推出当前的状态，但是要注意DP数组初始化的大小，DP数组应初始化为n+1
 
 
 
@@ -3095,6 +3095,44 @@ public int minCostClimbingStairs(int[] cost) {
         dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
     }
     return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
+}
+```
+
+
+
+
+
+### 力扣 62 不同路径
+
+
+
+确定`dp`数组的含义：`dp[i][j]`表示`(i,j)`位置上有多少种方式到达
+
+当i为0或者j为0的时候由常识可知只有一种方式可以到达
+
+不为0的时候当前的`dp[i][j]`是由上一个或者左一个决定的，将他们相加就是当前由多少种方式可以到达
+
+`dp[i][j] = dp[i - 1][j] + dp[i][j - 1]`
+
+
+
+具体代码如下
+
+
+
+```java
+public int uniquePaths(int m, int n) {
+    int[][] dp = new int[m][n];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i == 0 || j == 0) {
+                dp[i][j] = 1;
+            } else {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+    }
+    return dp[m - 1][n - 1];
 }
 ```
 
